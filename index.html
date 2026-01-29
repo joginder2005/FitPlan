@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPlan AI - Your Personal Fitness & Diet Companion</title>
+    <link rel="stylesheet" href="sora.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div class="container">
+            <div class="welcome-content">
+                <div class="hero-section">
+                    <h1 class="hero-title">FitPlan AI</h1>
+                    <p class="hero-subtitle">Your Personal Fitness & Diet Companion</p>
+                    <p class="hero-description">Get personalized workout plans and meal suggestions designed specifically for college students. Achieve your fitness goals on a budget!</p>
+                </div>
+                <div class="welcome-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">💪</div>
+                        <h3>Custom Workouts</h3>
+                        <p>Bodyweight exercises tailored to your fitness level</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🥗</div>
+                        <h3>Budget-Friendly Meals</h3>
+                        <p>Healthy Indian meals within your budget</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Track Progress</h3>
+                        <p>Monitor your journey with easy tracking tools</p>
+                    </div>
+                </div>
+                <button class="btn btn--primary btn--lg" onclick="startOnboarding()">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding Screens -->
+    <div id="onboarding-screen" class="screen hidden">
+        <div class="container">
+            <div class="onboarding-header">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p class="progress-text">Step <span id="current-step">1</span> of 6</p>
+            </div>
+
+            <!-- Step 1: Personal Details -->
+            <div class="onboarding-step active" id="step-1">
+                <h2>Tell us about yourself</h2>
+                <div class="form-group">
+                    <label class="form-label" for="age">Age</label>
+                    <input type="number" id="age" class="form-control" min="16" max="30" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="gender">Gender</label>
+                    <select id="gender" class="form-control" required>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="height">Height (cm)</label>
+                    <input type="number" id="height" class="form-control" min="140" max="200" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="weight">Weight (kg)</label>
+                    <input type="number" id="weight" class="form-control" min="40" max="150" required>
+                </div>
+                <button class="btn btn--primary" onclick="nextStep()">Next</button>
+            </div>
+
+            <!-- Step 2: Fitness Goals -->
+            <div class="onboarding-step hidden" id="step-2">
+                <h2>What's your fitness goal?</h2>
+                <div class="goal-options">
+                    <div class="goal-card" data-goal="weight_loss">
+                        <div class="goal-icon">🎯</div>
+                        <h3>Weight Loss</h3>
+                        <p>Lose weight and get leaner</p>
+                    </div>
+                    <div class="goal-card" data-goal="muscle_gain">
+                        <div class="goal-icon">💪</div>
+                        <h3>Muscle Gain</h3>
+                        <p>Build muscle and strength</p>
+                    </div>
+                    <div class="goal-card" data-goal="maintenance">
+                        <div class="goal-icon">⚖️</div>
+                        <h3>Maintenance</h3>
+                        <p>Stay fit and healthy</p>
+                    </div>
+                </div>
+                <div class="form-group" id="target-weight-group" style="display: none;">
+                    <label class="form-label" for="target-weight">Target Weight (kg)</label>
+                    <input type="number" id="target-weight" class="form-control" min="40" max="150">
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" onclick="prevStep()">Back</button>
+                    <button class="btn btn--primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Activity Level -->
+            <div class="onboarding-step hidden" id="step-3">
+                <h2>How active are you?</h2>
+                <div class="activity-options">
+                    <div class="activity-card" data-activity="sedentary">
+                        <h3>Sedentary</h3>
+                        <p>Little to no exercise, desk job</p>
+                    </div>
+                    <div class="activity-card" data-activity="lightly_active">
+                        <h3>Lightly Active</h3>
+                        <p>Light exercise 1-3 days/week</p>
+                    </div>
+                    <div class="activity-card" data-activity="moderately_active">
+                        <h3>Moderately Active</h3>
+                        <p>Moderate exercise 3-5 days/week</p>
+                    </div>
+                    <div class="activity-card" data-activity="very_active">
+                        <h3>Very Active</h3>
+                        <p>Heavy exercise 6-7 days/week</p>
+                    </div>
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" onclick="prevStep()">Back</button>
+                    <button class="btn btn--primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Diet & Budget -->
+            <div class="onboarding-step hidden" id="step-4">
+                <h2>Dietary preferences & Budget</h2>
+                <div class="form-group">
+                    <label class="form-label" for="diet-preference">Dietary Preference</label>
+                    <select id="diet-preference" class="form-control" required>
+                        <option value="">Select preference</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="non_vegetarian">Non-Vegetarian</option>
+                        <option value="eggetarian">Eggetarian</option>
+                        <option value="jain">Jain</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="monthly-budget">Monthly Food Budget (₹)</label>
+                    <input type="number" id="monthly-budget" class="form-control" min="1000" max="10000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="location">City</label>
+                    <input type="text" id="location" class="form-control" placeholder="e.g., Bangalore" required>
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" onclick="prevStep()">Back</button>
+                    <button class="btn btn--primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Equipment & Schedule -->
+            <div class="onboarding-step hidden" id="step-5">
+                <h2>Equipment & Schedule</h2>
+                <div class="form-group">
+                    <label class="form-label" for="equipment">Available Equipment</label>
+                    <select id="equipment" class="form-control" required>
+                        <option value="">Select equipment</option>
+                        <option value="none">No Equipment (Bodyweight only)</option>
+                        <option value="basic">Basic (Resistance Bands, Dumbbells)</option>
+                        <option value="home_gym">Home Gym Setup</option>
+                        <option value="gym_access">Full Gym Access</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="workout-time">Available Workout Time (minutes/day)</label>
+                    <select id="workout-time" class="form-control" required>
+                        <option value="">Select time</option>
+                        <option value="15">15-20 minutes</option>
+                        <option value="30">30-40 minutes</option>
+                        <option value="60">60+ minutes</option>
+                    </select>
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" onclick="prevStep()">Back</button>
+                    <button class="btn btn--primary" onclick="nextStep()">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Health & Restrictions -->
+            <div class="onboarding-step hidden" id="step-6">
+                <h2>Health Information</h2>
+                <div class="form-group">
+                    <label class="form-label" for="health-conditions">Health Conditions (optional)</label>
+                    <textarea id="health-conditions" class="form-control" rows="3" placeholder="Any health conditions or injuries we should know about..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="food-allergies">Food Allergies/Restrictions (optional)</label>
+                    <textarea id="food-allergies" class="form-control" rows="3" placeholder="Any food allergies or restrictions..."></textarea>
+                </div>
+                <div class="step-navigation">
+                    <button class="btn btn--outline" onclick="prevStep()">Back</button>
+                    <button class="btn btn--primary" onclick="completeOnboarding()">Complete Setup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboard-screen" class="screen hidden">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-content">
+                    <h1 class="nav-logo">FitPlan AI</h1>
+                    <div class="nav-links">
+                        <button class="nav-link active" onclick="showSection('dashboard')">Dashboard</button>
+                        <button class="nav-link" onclick="showSection('workout')">Workouts</button>
+                        <button class="nav-link" onclick="showSection('meals')">Meals</button>
+                        <button class="nav-link" onclick="showSection('progress')">Progress</button>
+                        <button class="nav-link" onclick="showSection('education')">Tips</button>
+                        <button class="nav-link" onclick="showSection('settings')">Settings</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="section active">
+                <div class="container">
+                    <div class="dashboard-header">
+                        <h2 id="welcome-message">Welcome back!</h2>
+                        <div class="daily-quote">
+                            <p id="motivational-quote">"Every workout is a step closer to your goal!"</p>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Current BMI</h3>
+                            <div class="stat-value" id="current-bmi">22.4</div>
+                            <div class="stat-status status status--success">Normal</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Target Weight</h3>
+                            <div class="stat-value"><span id="target-weight-display">70</span>kg</div>
+                            <div class="stat-subtitle">Goal: <span id="weight-diff">-4kg</span></div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Days on Plan</h3>
+                            <div class="stat-value" id="days-on-plan">1</div>
+                            <div class="stat-subtitle">Keep going!</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Weekly Budget</h3>
+                            <div class="stat-value">₹<span id="weekly-budget">500</span></div>
+                            <div class="stat-subtitle">Food expenses</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-actions">
+                        <button class="btn btn--primary" onclick="showSection('workout')">View Today's Workout</button>
+                        <button class="btn btn--secondary" onclick="showSection('meals')">Check Meal Plan</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Workout Section -->
+            <section id="workout-section" class="section hidden">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Your Workout Plan</h2>
+                        <button class="btn btn--outline" onclick="generateWorkout()">Regenerate Plan</button>
+                    </div>
+                    <div class="workout-container">
+                        <div class="workout-tabs">
+                            <button class="tab-btn active" onclick="showWorkoutDay('day1')">Day 1</button>
+                            <button class="tab-btn" onclick="showWorkoutDay('day2')">Day 2</button>
+                            <button class="tab-btn" onclick="showWorkoutDay('day3')">Day 3</button>
+                            <button class="tab-btn" onclick="showWorkoutDay('day4')">Day 4</button>
+                            <button class="tab-btn" onclick="showWorkoutDay('day5')">Day 5</button>
+                            <button class="tab-btn" onclick="showWorkoutDay('day6')">Day 6</button>
+                            <button class="tab-btn" onclick="showWorkoutDay('day7')">Day 7</button>
+                        </div>
+                        <div class="workout-content">
+                            <div id="workout-day-content">
+                                <!-- Workout content will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meals Section -->
+            <section id="meals-section" class="section hidden">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Your Meal Plan</h2>
+                        <div class="meal-actions">
+                            <button class="btn btn--outline" onclick="generateMeals()">Regenerate Plan</button>
+                            <button class="btn btn--secondary" onclick="generateShoppingList()">Shopping List</button>
+                        </div>
+                    </div>
+                    <div class="meals-container">
+                        <div class="meal-tabs">
+                            <button class="tab-btn active" onclick="showMealDay('monday')">Mon</button>
+                            <button class="tab-btn" onclick="showMealDay('tuesday')">Tue</button>
+                            <button class="tab-btn" onclick="showMealDay('wednesday')">Wed</button>
+                            <button class="tab-btn" onclick="showMealDay('thursday')">Thu</button>
+                            <button class="tab-btn" onclick="showMealDay('friday')">Fri</button>
+                            <button class="tab-btn" onclick="showMealDay('saturday')">Sat</button>
+                            <button class="tab-btn" onclick="showMealDay('sunday')">Sun</button>
+                        </div>
+                        <div class="meals-content">
+                            <div id="meal-day-content">
+                                <!-- Meal content will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progress-section" class="section hidden">
+                <div class="container">
+                    <h2>Track Your Progress</h2>
+                    <div class="progress-grid">
+                        <div class="progress-card">
+                            <h3>Weight Progress</h3>
+                            <div class="weight-tracker">
+                                <div class="form-group">
+                                    <label class="form-label" for="current-weight-input">Current Weight (kg)</label>
+                                    <input type="number" id="current-weight-input" class="form-control" step="0.1">
+                                    <button class="btn btn--primary btn--sm" onclick="updateWeight()">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-card">
+                            <h3>Workout Streak</h3>
+                            <div class="streak-display">
+                                <div class="streak-number" id="workout-streak">0</div>
+                                <div class="streak-label">days</div>
+                            </div>
+                        </div>
+                        <div class="progress-card">
+                            <h3>Meal Adherence</h3>
+                            <div class="adherence-display">
+                                <div class="adherence-percentage" id="meal-adherence">0%</div>
+                                <div class="adherence-label">this week</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education Section -->
+            <section id="education-section" class="section hidden">
+                <div class="container">
+                    <h2>Health & Fitness Tips</h2>
+                    <div class="education-grid">
+                        <div class="education-card">
+                            <h3>💡 Nutrition Tips</h3>
+                            <ul>
+                                <li>Eat protein with every meal for muscle recovery</li>
+                                <li>Stay hydrated - aim for 8-10 glasses of water daily</li>
+                                <li>Include colorful vegetables in every meal</li>
+                                <li>Don't skip meals, especially breakfast</li>
+                            </ul>
+                        </div>
+                        <div class="education-card">
+                            <h3>🏋️ Exercise Tips</h3>
+                            <ul>
+                                <li>Always warm up before exercising</li>
+                                <li>Focus on form over speed or weight</li>
+                                <li>Progressive overload - gradually increase intensity</li>
+                                <li>Rest days are crucial for muscle recovery</li>
+                            </ul>
+                        </div>
+                        <div class="education-card">
+                            <h3>💰 Budget-Friendly Foods</h3>
+                            <ul>
+                                <li>Dal and lentils - cheap protein sources</li>
+                                <li>Seasonal vegetables for better prices</li>
+                                <li>Eggs - complete protein and affordable</li>
+                                <li>Bananas - quick energy and potassium</li>
+                            </ul>
+                        </div>
+                        <div class="education-card">
+                            <h3>🍳 Cooking Tips</h3>
+                            <ul>
+                                <li>Meal prep on weekends to save time</li>
+                                <li>Steam vegetables to retain nutrients</li>
+                                <li>Use minimal oil - opt for cooking sprays</li>
+                                <li>Batch cook dal and rice for the week</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="section hidden">
+                <div class="container">
+                    <h2>Settings & Preferences</h2>
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3>Profile Information</h3>
+                            <button class="btn btn--outline" onclick="editProfile()">Edit Profile</button>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Goals & Preferences</h3>
+                            <button class="btn btn--outline" onclick="updateGoals()">Update Goals</button>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Reset Application</h3>
+                            <button class="btn btn--outline" onclick="resetApp()">Start Over</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Shopping List -->
+    <div id="shopping-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Shopping List</h3>
+                <button class="modal-close" onclick="closeModal('shopping-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="shopping-list-content">
+                    <!-- Shopping list will be generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Generating your personalized plan...</p>
+        </div>
+    </div>
+
+    <script src="soki.js"></script>
+</body>
+</html>
