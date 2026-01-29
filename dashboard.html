@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitPlan AI - Dashboard</title>
+  <link rel="stylesheet" href="sora.css" />
+</head>
+
+<body>
+
+  <!-- DASHBOARD SCREEN -->
+  <div id="dashboard-screen" class="screen">
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-content">
+          <h1 class="nav-logo">FitPlan AI</h1>
+          <div class="nav-links">
+            <button class="nav-link active" onclick="showSection('dashboard')">Dashboard</button>
+            <button class="nav-link" onclick="showSection('workout')">Workouts</button>
+            <button class="nav-link" onclick="showSection('meals')">Meals</button>
+            <button class="nav-link" onclick="showSection('progress')">Progress</button>
+            <button class="nav-link" onclick="showSection('education')">Tips</button>
+            <button class="nav-link" onclick="showSection('settings')">Settings</button>
+            <button class="nav-link logout-btn" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- DASHBOARD -->
+      <section id="dashboard-section" class="section active">
+        <div class="container">
+          <div class="dashboard-header">
+            <h2 id="welcome-message">Welcome to FitPlan 👋</h2>
+            <p class="daily-quote">"Every workout counts. Stay consistent."</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>BMI</h3>
+              <div class="stat-value" id="current-bmi">--</div>
+            </div>
+            <div class="stat-card">
+              <h3>Target Weight</h3>
+              <div class="stat-value"><span id="target-weight-display">--</span> kg</div>
+            </div>
+            <div class="stat-card">
+              <h3>Days on Plan</h3>
+              <div class="stat-value" id="days-on-plan">1</div>
+            </div>
+            <div class="stat-card">
+              <h3>Weekly Budget</h3>
+              <div class="stat-value">₹<span id="weekly-budget">--</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORKOUT -->
+      <section id="workout-section" class="section hidden">
+        <div class="container">
+          <h2>Your Workout Plan</h2>
+          <button class="btn btn--outline" onclick="generateWorkout()">Regenerate</button>
+          <div id="workout-day-content"></div>
+        </div>
+      </section>
+
+      <!-- MEALS -->
+      <section id="meals-section" class="section hidden">
+        <div class="container">
+          <h2>Your Meal Plan</h2>
+          <button class="btn btn--outline" onclick="generateMeals()">Regenerate</button>
+          <div id="meal-day-content"></div>
+        </div>
+      </section>
+
+      <!-- PROGRESS -->
+      <section id="progress-section" class="section hidden">
+        <div class="container">
+          <h2>Track Progress</h2>
+
+          <label>Update Weight (kg)</label>
+          <input type="number" id="current-weight-input" />
+          <button onclick="updateWeight()">Update</button>
+
+          <div class="progress-stats">
+            <p>Workout Streak: <span id="workout-streak">0</span> days</p>
+            <p>Meal Adherence: <span id="meal-adherence">0%</span></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- EDUCATION -->
+      <section id="education-section" class="section hidden">
+        <div class="container">
+          <h2>Fitness Tips</h2>
+          <ul>
+            <li>Protein with every meal</li>
+            <li>Drink enough water</li>
+            <li>Consistency beats intensity</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings-section" class="section hidden">
+        <div class="container">
+          <h2>Settings</h2>
+          <button onclick="resetApp()">Reset Application</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FIREBASE AUTH PROTECTION -->
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { onAuthStateChanged, signOut } from
+      "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        document.getElementById("welcome-message").innerText =
+          `Welcome, ${user.email}`;
+      }
+    });
+
+    window.logout = function () {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      });
+    };
+  </script>
+
+  <!-- YOUR EXISTING LOGIC -->
+  <script src="soki.js"></script>
+
+</body>
+</html>
