@@ -4,6 +4,11 @@ import {
   signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+import {
+  GoogleAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 window.signup = function () {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -26,3 +31,17 @@ window.login = function () {
     })
     .catch(error => alert(error.message));
 };
+
+
+const googleBtn = document.getElementById("google-login");
+
+const provider = new GoogleAuthProvider();
+
+googleBtn.addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+    window.location.href = "index.html";
+  } catch (error) {
+    alert(error.message);
+  }
+});
